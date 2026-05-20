@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Neo Market</title>
+  <title>Urban Store</title>
 
   <style>
 
@@ -11,161 +11,157 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
     }
 
     body{
-      background: #0f0f0f;
-      color: white;
+      background: #ffffff;
+      color: #111;
     }
 
-    /* HEADER */
+    /* NAVBAR */
 
-    header{
+    .navbar{
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 25px 7%;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(10px);
+      padding: 25px 8%;
+      border-bottom: 1px solid #e5e5e5;
+      background: white;
       position: sticky;
       top: 0;
-      z-index: 100;
     }
 
     .logo{
-      font-size: 32px;
+      font-size: 30px;
       font-weight: bold;
-      color: #00f5d4;
+      letter-spacing: 2px;
     }
 
-    nav a{
+    .menu a{
       text-decoration: none;
-      color: white;
-      margin-left: 30px;
+      color: #111;
+      margin-left: 25px;
+      font-size: 15px;
       transition: 0.3s;
     }
 
-    nav a:hover{
-      color: #00f5d4;
+    .menu a:hover{
+      color: #e63946;
     }
 
     /* HERO */
 
     .hero{
-      min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 50px 7%;
-      gap: 60px;
+      justify-content: space-between;
+      padding: 70px 8%;
+      min-height: 90vh;
+      background: #f8f8f8;
     }
 
     .hero-text{
-      flex: 1;
+      width: 50%;
+    }
+
+    .hero-text span{
+      color: #e63946;
+      font-weight: bold;
+      letter-spacing: 2px;
     }
 
     .hero-text h1{
-      font-size: 75px;
+      font-size: 70px;
+      margin: 20px 0;
       line-height: 1.1;
-      margin-bottom: 25px;
-    }
-
-    .hero-text h1 span{
-      color: #00f5d4;
     }
 
     .hero-text p{
-      color: #bdbdbd;
-      line-height: 1.7;
+      color: #555;
       margin-bottom: 35px;
-      max-width: 550px;
-    }
-
-    .buttons{
-      display: flex;
-      gap: 20px;
+      line-height: 1.6;
+      width: 90%;
     }
 
     .btn{
       padding: 15px 35px;
-      border-radius: 12px;
+      background: #111;
+      color: white;
       text-decoration: none;
-      font-weight: bold;
+      border-radius: 50px;
       transition: 0.3s;
     }
 
-    .btn-primary{
-      background: #00f5d4;
-      color: black;
-    }
-
-    .btn-primary:hover{
-      transform: translateY(-5px);
-    }
-
-    .btn-secondary{
-      border: 2px solid #00f5d4;
-      color: #00f5d4;
-    }
-
-    .btn-secondary:hover{
-      background: #00f5d4;
-      color: black;
+    .btn:hover{
+      background: #e63946;
     }
 
     .hero-image{
-      flex: 1;
-      display: flex;
-      justify-content: center;
+      width: 45%;
     }
 
     .hero-image img{
       width: 100%;
-      max-width: 500px;
-      border-radius: 25px;
-      box-shadow: 0 10px 40px rgba(0,245,212,0.2);
+      border-radius: 20px;
     }
 
-    /* INFO CARDS */
+    /* CATEGORÍAS */
 
-    .info{
-      padding: 80px 7%;
+    .categories{
+      padding: 80px 8%;
+    }
+
+    .categories h2{
+      font-size: 40px;
+      margin-bottom: 40px;
+    }
+
+    .category-grid{
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
       gap: 25px;
     }
 
-    .card{
-      background: #1b1b1b;
-      padding: 35px;
+    .category{
+      height: 300px;
       border-radius: 20px;
-      transition: 0.3s;
-      border: 1px solid transparent;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
     }
 
-    .card:hover{
-      border-color: #00f5d4;
-      transform: translateY(-8px);
+    .category img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.5s;
     }
 
-    .card h3{
-      margin-bottom: 15px;
-      color: #00f5d4;
-      font-size: 24px;
+    .category:hover img{
+      transform: scale(1.1);
     }
 
-    .card p{
-      color: #cfcfcf;
-      line-height: 1.6;
+    .overlay{
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: end;
+      padding: 25px;
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
     }
+
+    /* FOOTER */
 
     footer{
+      background: #111;
+      color: white;
       text-align: center;
       padding: 25px;
-      background: #111;
-      margin-top: 40px;
-      color: #aaa;
+      margin-top: 60px;
     }
 
   </style>
@@ -173,15 +169,15 @@
 </head>
 <body>
 
-  <header>
+  <header class="navbar">
 
-    <div class="logo">NEO</div>
+    <div class="logo">URBAN</div>
 
-    <nav>
+    <nav class="menu">
       <a href="#">Inicio</a>
-      <a href="#">Productos</a>
-      <a href="#">Tecnología</a>
-      <a href="#">Ofertas</a>
+      <a href="#">Colección</a>
+      <a href="#">Hombre</a>
+      <a href="#">Mujer</a>
       <a href="#">Contacto</a>
     </nav>
 
@@ -191,67 +187,62 @@
 
     <div class="hero-text">
 
-      <h1>La nueva era de las <span>compras online</span></h1>
+      <span>NUEVA TEMPORADA</span>
+
+      <h1>Moda urbana para destacar</h1>
 
       <p>
-        Tecnología, diseño y productos innovadores en un solo lugar. 
-        Descubre una experiencia futurista y moderna para comprar.
+        Descubre prendas modernas, minimalistas y cómodas para crear tu mejor estilo.
       </p>
 
-      <div class="buttons">
-
-        <a href="#" class="btn btn-primary">Comprar ahora</a>
-
-        <a href="#" class="btn btn-secondary">Ver catálogo</a>
-
-      </div>
+      <a href="#" class="btn">Explorar colección</a>
 
     </div>
 
     <div class="hero-image">
 
-      <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop">
+      <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?q=80&w=1200&auto=format&fit=crop">
 
     </div>
 
   </section>
 
-  <section class="info">
+  <section class="categories">
 
-    <div class="card">
+    <h2>Categorías populares</h2>
 
-      <h3>Envíos rápidos</h3>
+    <div class="category-grid">
 
-      <p>
-        Recibe tus productos en tiempo récord con nuestro servicio premium.
-      </p>
+      <div class="category">
 
-    </div>
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1000&auto=format&fit=crop">
 
-    <div class="card">
+        <div class="overlay">Mujer</div>
 
-      <h3>Pago seguro</h3>
+      </div>
 
-      <p>
-        Tus compras protegidas con sistemas modernos de seguridad digital.
-      </p>
+      <div class="category">
 
-    </div>
+        <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1000&auto=format&fit=crop">
 
-    <div class="card">
+        <div class="overlay">Hombre</div>
 
-      <h3>Soporte 24/7</h3>
+      </div>
 
-      <p>
-        Atención personalizada para ayudarte en cualquier momento.
-      </p>
+      <div class="category">
+
+        <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1000&auto=format&fit=crop">
+
+        <div class="overlay">Accesorios</div>
+
+      </div>
 
     </div>
 
   </section>
 
   <footer>
-    © 2026 Neo Market - Todos los derechos reservados
+    © 2026 Urban Store - Todos los derechos reservados
   </footer>
 
 </body>
