@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Productos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; /* Para que los bordes redondeados funcionen */
+        }
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        /* Alineación a la derecha para valores numéricos */
+        .numero {
+            text-align: right;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+            transition: background-color 0.2s ease;
+        }
+        /* Estilo para avisar si no hay stock (opcional) */
+        .sin-stock {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Inventario de Productos</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th class="numero">Precio</th>
+                <th class="numero">Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>PROD-001</td>
+                <td>Laptop HP ProBook</td>
+                <td>Tecnología</td>
+                <td class="numero">$850.00</td>
+                <td class="numero">15 u.</td>
+            </tr>
+            <tr>
+                <td>PROD-002</td>
+                <td>Teclado Mecánico RGB</td>
+                <td>Accesorios</td>
+                <td class="numero">$45.50</td>
+                <td class="numero">42 u.</td>
+            </tr>
+            <tr>
+                <td>PROD-003</td>
+                <td>Monitor Gamer 24"</td>
+                <td>Tecnología</td>
+                <td class="numero">$199.99</td>
+                <td class="numero sin-stock">0 u.</td>
+            </tr>
+            <tr>
+                <td>PROD-004</td>
+                <td>Ratón Ergonómico Inalámbrico</td>
+                <td>Accesorios</td>
+                <td class="numero">$29.90</td>
+                <td class="numero">28 u.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
