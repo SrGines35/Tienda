@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
-import { NewProduct } from './components/NewProduct/NewProduct';
+import { Products } from './pages/products/products/products';
 
 export const routes: Routes = [
     
@@ -9,8 +9,12 @@ export const routes: Routes = [
     component: Home
    },
    {
+    path: 'products',
+    component: Products
+   },
+   {
     path: '',
-    component:NewProduct
+    redirectTo: 'home',
+    pathMatch: 'full'
    }
-
 ];
