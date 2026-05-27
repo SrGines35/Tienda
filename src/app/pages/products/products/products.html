@@ -3,95 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario de Productos</title>
+    <title>Productos - Urban Store</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 40px;
-            background-color: #f4f7f6;
-            color: #333;
+            background: #ffffff;
+            color: #111;
         }
-        h2 {
-            color: #2c3e50;
+
+        /* SECTION PRODUCTOS */
+        .products-section {
+            padding: 80px 8%;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden; /* Para que los bordes redondeados funcionen */
-        }
-        th, td {
-            padding: 14px 18px;
-            text-align: left;
-        }
-        th {
-            background-color: #34495e;
-            color: white;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        /* Alineación a la derecha para valores numéricos */
-        .numero {
-            text-align: right;
-        }
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-        tr:hover {
-            background-color: #e9ecef;
-            transition: background-color 0.2s ease;
-        }
-        /* Estilo para avisar si no hay stock (opcional) */
-        .sin-stock {
-            color: #e74c3c;
-            font-weight: bold;
-        }
-        /* Formulario de agregar producto */
-        .form-container {
-            background: #fff;
-            padding: 16px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+        .section-header {
             display: flex;
-            gap: 12px;
-            align-items: flex-end;
-            margin-bottom: 18px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
         }
-        .form-container label {
-            font-size: 13px;
-            color: #333;
-            display: block;
-            margin-bottom: 6px;
+
+        .section-header h1 {
+            font-size: 40px;
+            color: #111;
         }
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .form-group input {
-            padding: 8px 10px;
-            border: 1px solid #dfe6e9;
-            border-radius: 6px;
-            width: 160px;
-        }
-        .form-group .small {
-            width: 90px;
-        }
-        .btn {
-            background-color: #2ecc71;
+
+        .btn-add-product {
+            background-color: #111;
             color: white;
+            padding: 15px 35px;
             border: none;
-            padding: 10px 14px;
-            border-radius: 6px;
+            border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
         }
-        .btn:active { transform: translateY(1px); }
-        
+
+        .btn-add-product:hover {
+            background-color: #e63946;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #e63946;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .product-stock {
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .product-stock.out-of-stock {
+            background-color: #ffe5e5;
+            color: #e63946;
+        }
+
         /* MODAL STYLES */
         .modal {
             display: none;
@@ -113,7 +158,7 @@
         .modal-content {
             background-color: white;
             margin: 5% auto;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             width: 90%;
             max-width: 500px;
@@ -138,7 +183,7 @@
         .modal-header h2 {
             margin: 0;
             font-size: 24px;
-            color: #2c3e50;
+            color: #111;
         }
 
         .close-btn {
@@ -148,10 +193,11 @@
             cursor: pointer;
             background: none;
             border: none;
+            transition: 0.2s;
         }
 
         .close-btn:hover {
-            color: #000;
+            color: #111;
         }
 
         .modal-form-group {
@@ -163,20 +209,22 @@
         .modal-form-group label {
             margin-bottom: 5px;
             font-weight: 600;
-            color: #333;
+            color: #111;
+            font-size: 14px;
         }
 
         .modal-form-group input {
-            padding: 10px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 14px;
+            transition: 0.2s;
         }
 
         .modal-form-group input:focus {
             outline: none;
-            border-color: #2ecc71;
-            box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+            border-color: #e63946;
+            box-shadow: 0 0 5px rgba(230, 57, 70, 0.3);
         }
 
         .modal-footer {
@@ -187,102 +235,103 @@
         }
 
         .modal-footer button {
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
+            transition: 0.2s;
         }
 
         .btn-primary {
-            background-color: #2ecc71;
+            background-color: #111;
             color: white;
         }
 
         .btn-primary:hover {
-            background-color: #27ae60;
+            background-color: #e63946;
         }
 
         .btn-secondary {
-            background-color: #ddd;
-            color: #333;
+            background-color: #f0f0f0;
+            color: #111;
+            border: 1px solid #ddd;
         }
 
         .btn-secondary:hover {
-            background-color: #ccc;
+            background-color: #e9e9e9;
         }
 
-        .btn-add-product {
-            background-color: #2ecc71;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
+        #detailBody {
+            margin: 20px 0;
+        }
+
+        #detailBody p {
+            margin-bottom: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        #detailBody strong {
+            color: #111;
             font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .btn-add-product:hover {
-            background-color: #27ae60;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <h2>Inventario de Productos</h2>
-        <button class="btn-add-product" id="openModalBtn">+ Agregar Producto</button>
-    </div>
+    <section class="products-section">
+        <div class="section-header">
+            <h1>Colección de Productos</h1>
+            <button class="btn-add-product" id="openModalBtn">+ Agregar Producto</button>
+        </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Producto</th>
-                <th>Categoría</th>
-                <th class="numero">Precio</th>
-                <th class="numero">Stock</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>PROD-001</td>
-                <td>Laptop HP ProBook</td>
-                <td>Tecnología</td>
-                <td class="numero">$850.00</td>
-                <td class="numero">15 u.</td>
-            </tr>
-            <tr>
-                <td>PROD-002</td>
-                <td>Teclado Mecánico RGB</td>
-                <td>Accesorios</td>
-                <td class="numero">$45.50</td>
-                <td class="numero">42 u.</td>
-            </tr>
-            <tr>
-                <td>PROD-003</td>
-                <td>Monitor Gamer 24"</td>
-                <td>Tecnología</td>
-                <td class="numero">$199.99</td>
-                <td class="numero sin-stock">0 u.</td>
-            </tr>
-            <tr>
-                <td>PROD-004</td>
-                <td>Ratón Ergonómico Inalámbrico</td>
-                <td>Accesorios</td>
-                <td class="numero">$29.90</td>
-                <td class="numero">28 u.</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="products-grid" id="productsGrid">
+            <!-- Productos estáticos iniciales -->
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <span style="opacity: 0.5;">Imagen de producto</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Camisetas</div>
+                    <div class="product-name">Camiseta Urban Clásica</div>
+                    <div class="product-footer">
+                        <div class="product-price">$29.99</div>
+                        <div class="product-stock">45 u.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <span style="opacity: 0.5;">Imagen de producto</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Pantalones</div>
+                    <div class="product-name">Pantalón Slim Fit</div>
+                    <div class="product-footer">
+                        <div class="product-price">$59.99</div>
+                        <div class="product-stock">32 u.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <span style="opacity: 0.5;">Imagen de producto</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Accesorios</div>
+                    <div class="product-name">Gorra Urban Negra</div>
+                    <div class="product-footer">
+                        <div class="product-price">$19.99</div>
+                        <div class="product-stock">0 u.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- MODAL PARA AGREGAR PRODUCTO -->
     <div id="productModal" class="modal">
@@ -311,6 +360,16 @@
                 <div class="modal-form-group">
                     <label for="productStock">Stock</label>
                     <input type="number" id="productStock" placeholder="Ej: 10" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productImageUrl">URL de imagen</label>
+                    <input type="url" id="productImageUrl" placeholder="https://.../imagen.jpg">
+                </div>
+                <div class="modal-form-group" id="imagePreviewContainer" style="display:none;">
+                    <label>Previsualización</label>
+                    <div style="width:100%;height:180px;background:#f4f4f4;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                        <img id="imagePreviewImg" src="" alt="Vista previa" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
