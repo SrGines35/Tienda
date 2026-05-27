@@ -112,11 +112,13 @@
 
         .modal-content {
             background-color: white;
-            margin: 10% auto;
-            padding: 30px;
+            margin: 5% auto;
+            padding: 20px;
             border-radius: 10px;
             width: 90%;
             max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             animation: slideDown 0.3s ease;
         }
@@ -318,85 +320,7 @@
         </div>
     </div>
 
-    <script>
-        const modal = document.getElementById('productModal');
-        const openModalBtn = document.getElementById('openModalBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const productForm = document.getElementById('productForm');
-        const tableBody = document.querySelector('table tbody');
-
-        // Abrir modal
-        openModalBtn.addEventListener('click', function() {
-            modal.style.display = 'block';
-            document.getElementById('productCode').focus();
-        });
-
-        // Cerrar modal
-        function closeModal() {
-            modal.style.display = 'none';
-            productForm.reset();
-        }
-
-        closeModalBtn.addEventListener('click', closeModal);
-        cancelBtn.addEventListener('click', closeModal);
-
-        // Cerrar modal al hacer clic fuera de él
-        window.addEventListener('click', function(event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        });
-
-        // Manejar envío del formulario
-        productForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const code = document.getElementById('productCode').value.trim();
-            const name = document.getElementById('productName').value.trim();
-            const category = document.getElementById('productCategory').value.trim();
-            const price = parseFloat(document.getElementById('productPrice').value);
-            const stock = parseInt(document.getElementById('productStock').value);
-
-            if (!code || !name) {
-                alert('El código y nombre son obligatorios.');
-                return;
-            }
-
-            // Crear nueva fila
-            const newRow = document.createElement('tr');
-            
-            const tdCode = document.createElement('td');
-            tdCode.textContent = code;
-            
-            const tdName = document.createElement('td');
-            tdName.textContent = name;
-            
-            const tdCategory = document.createElement('td');
-            tdCategory.textContent = category || '-';
-            
-            const tdPrice = document.createElement('td');
-            tdPrice.className = 'numero';
-            tdPrice.textContent = '$' + price.toFixed(2);
-            
-            const tdStock = document.createElement('td');
-            tdStock.className = 'numero';
-            tdStock.textContent = stock + ' u.';
-            if (stock <= 0) {
-                tdStock.classList.add('sin-stock');
-            }
-
-            newRow.appendChild(tdCode);
-            newRow.appendChild(tdName);
-            newRow.appendChild(tdCategory);
-            newRow.appendChild(tdPrice);
-            newRow.appendChild(tdStock);
-
-            tableBody.appendChild(newRow);
-            
-            closeModal();
-        });
-    </script>
+    <script src="./products.js"></script>
 
 </body>
 </html>
