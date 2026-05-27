@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Urban Store</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #ffffff;
+            color: #111;
+        }
+
+        /* SECTION PRODUCTOS */
+        .products-section {
+            padding: 80px 8%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .section-header h1 {
+            font-size: 40px;
+            color: #111;
+        }
+
+        .btn-add-product {
+            background-color: #111;
+            color: white;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-add-product:hover {
+            background-color: #e63946;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #e63946;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .product-stock {
+            font-size: 13px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background-color: #f0f0f0;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .product-stock.out-of-stock {
+            background-color: #ffe5e5;
+            color: #e63946;
+        }
+
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #111;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #111;
+        }
+
+        .modal-form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-form-group label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #111;
+            font-size: 14px;
+        }
+
+        .modal-form-group input {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .modal-form-group input:focus {
+            outline: none;
+            border-color: #e63946;
+            box-shadow: 0 0 5px rgba(230, 57, 70, 0.3);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .modal-footer button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #111;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #e63946;
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #111;
+            border: 1px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e9e9e9;
+        }
+
+            .navbar{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 8%;
+      border-bottom: 1px solid #e5e5e5;
+      background: white;
+      position: sticky;
+      top: 0;
+    }
+
+    .logo{
+      font-size: 30px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .menu a{
+      text-decoration: none;
+      color: #111;
+      margin-left: 25px;
+      font-size: 15px;
+      transition: 0.3s;
+    }
+
+    .menu a:hover{
+      color: #e63946;
+    }
+
+        #detailBody {
+            margin: 20px 0;
+        }
+
+        #detailBody p {
+            margin-bottom: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        #detailBody strong {
+            color: #111;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+      <header class="navbar">
+
+    <div class="logo">URBAN</div>
+
+    <nav class="menu">
+      <a href="home">Inicio</a>
+      <a href="products">Productos</a>
+      <a href="#">Hombre</a>
+      <a href="#">Mujer</a>
+      <a href="#">Contacto</a>
+    </nav>
+
+  </header>
+
+    <section class="products-section">
+        <div class="section-header">
+            <h1>Colección de Productos</h1>
+            <button class="btn-add-product" id="openModalBtn">+ Agregar Producto</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <!-- Productos estáticos iniciales -->
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                    <span style="opacity: 0.5;">Imagen de producto</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Camisetas</div>
+                    <div class="product-name">Camiseta Urban Clásica</div>
+                    <div class="product-footer">
+                        <div class="product-price">$29.99</div>
+                        <div class="product-stock">45 u.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <span style="opacity: 0.5;">Imagen de producto</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Pantalones</div>
+                    <div class="product-name">Pantalón Slim Fit</div>
+                    <div class="product-footer">
+                        <div class="product-price">$59.99</div>
+                        <div class="product-stock">32 u.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <span style="opacity: 0.5;">Imagen de producto</span>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Accesorios</div>
+                    <div class="product-name">Gorra Urban Negra</div>
+                    <div class="product-footer">
+                        <div class="product-price">$19.99</div>
+                        <div class="product-stock">0 u.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL PARA AGREGAR PRODUCTO -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Agregar Nuevo Producto</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="productForm">
+                <div class="modal-form-group">
+                    <label for="productCode">Código del Producto</label>
+                    <input type="text" id="productCode" placeholder="Ej: PROD-005" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productName">Nombre del Producto</label>
+                    <input type="text" id="productName" placeholder="Ej: Monitor Curvo" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productCategory">Categoría</label>
+                    <input type="text" id="productCategory" placeholder="Ej: Tecnología" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productPrice">Precio</label>
+                    <input type="number" id="productPrice" step="0.01" placeholder="Ej: 299.99" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productStock">Stock</label>
+                    <input type="number" id="productStock" placeholder="Ej: 10" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productImageUrl">URL de imagen</label>
+                    <input type="url" id="productImageUrl" placeholder="https://.../imagen.jpg">
+                </div>
+                <div class="modal-form-group" id="imagePreviewContainer" style="display:none;">
+                    <label>Previsualización</label>
+                    <div style="width:100%;height:180px;background:#f4f4f4;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                        <img id="imagePreviewImg" src="" alt="Vista previa" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Agregar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE DETALLE DE PRODUCTO -->
+    <div id="productDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalle del Producto</h2>
+                <button class="close-btn" id="closeDetailBtn">&times;</button>
+            </div>
+            <div id="detailBody">
+                <p><strong>Código:</strong> <span id="detailCode"></span></p>
+                <p><strong>Nombre:</strong> <span id="detailName"></span></p>
+                <p><strong>Categoría:</strong> <span id="detailCategory"></span></p>
+                <p><strong>Precio:</strong> <span id="detailPrice"></span></p>
+                <p><strong>Stock:</strong> <span id="detailStock"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="closeDetailBtn2">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./products.js"></script>
+
+</body>
+</html>
