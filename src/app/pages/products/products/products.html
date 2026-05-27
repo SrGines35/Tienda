@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Productos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden; /* Para que los bordes redondeados funcionen */
+        }
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        /* Alineación a la derecha para valores numéricos */
+        .numero {
+            text-align: right;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        tr:hover {
+            background-color: #e9ecef;
+            transition: background-color 0.2s ease;
+        }
+        /* Estilo para avisar si no hay stock (opcional) */
+        .sin-stock {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        /* Formulario de agregar producto */
+        .form-container {
+            background: #fff;
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 18px;
+        }
+        .form-container label {
+            font-size: 13px;
+            color: #333;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .form-group input {
+            padding: 8px 10px;
+            border: 1px solid #dfe6e9;
+            border-radius: 6px;
+            width: 160px;
+        }
+        .form-group .small {
+            width: 90px;
+        }
+        .btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn:active { transform: translateY(1px); }
+        
+        /* MODAL STYLES */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #2c3e50;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .modal-form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-form-group label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .modal-form-group input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .modal-form-group input:focus {
+            outline: none;
+            border-color: #2ecc71;
+            box-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .modal-footer button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-secondary {
+            background-color: #ddd;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ccc;
+        }
+
+        .btn-add-product {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .btn-add-product:hover {
+            background-color: #27ae60;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h2>Inventario de Productos</h2>
+        <button class="btn-add-product" id="openModalBtn">+ Agregar Producto</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th class="numero">Precio</th>
+                <th class="numero">Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>PROD-001</td>
+                <td>Laptop HP ProBook</td>
+                <td>Tecnología</td>
+                <td class="numero">$850.00</td>
+                <td class="numero">15 u.</td>
+            </tr>
+            <tr>
+                <td>PROD-002</td>
+                <td>Teclado Mecánico RGB</td>
+                <td>Accesorios</td>
+                <td class="numero">$45.50</td>
+                <td class="numero">42 u.</td>
+            </tr>
+            <tr>
+                <td>PROD-003</td>
+                <td>Monitor Gamer 24"</td>
+                <td>Tecnología</td>
+                <td class="numero">$199.99</td>
+                <td class="numero sin-stock">0 u.</td>
+            </tr>
+            <tr>
+                <td>PROD-004</td>
+                <td>Ratón Ergonómico Inalámbrico</td>
+                <td>Accesorios</td>
+                <td class="numero">$29.90</td>
+                <td class="numero">28 u.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- MODAL PARA AGREGAR PRODUCTO -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Agregar Nuevo Producto</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="productForm">
+                <div class="modal-form-group">
+                    <label for="productCode">Código del Producto</label>
+                    <input type="text" id="productCode" placeholder="Ej: PROD-005" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productName">Nombre del Producto</label>
+                    <input type="text" id="productName" placeholder="Ej: Monitor Curvo" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productCategory">Categoría</label>
+                    <input type="text" id="productCategory" placeholder="Ej: Tecnología" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productPrice">Precio</label>
+                    <input type="number" id="productPrice" step="0.01" placeholder="Ej: 299.99" required>
+                </div>
+                <div class="modal-form-group">
+                    <label for="productStock">Stock</label>
+                    <input type="number" id="productStock" placeholder="Ej: 10" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Agregar Producto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE DETALLE DE PRODUCTO -->
+    <div id="productDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Detalle del Producto</h2>
+                <button class="close-btn" id="closeDetailBtn">&times;</button>
+            </div>
+            <div id="detailBody">
+                <p><strong>Código:</strong> <span id="detailCode"></span></p>
+                <p><strong>Nombre:</strong> <span id="detailName"></span></p>
+                <p><strong>Categoría:</strong> <span id="detailCategory"></span></p>
+                <p><strong>Precio:</strong> <span id="detailPrice"></span></p>
+                <p><strong>Stock:</strong> <span id="detailStock"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="closeDetailBtn2">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./products.js"></script>
+
+</body>
+</html>
